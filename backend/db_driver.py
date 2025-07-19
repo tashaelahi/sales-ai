@@ -5,13 +5,12 @@ from contextlib import contextmanager
 
 @dataclass
 class Car:
-    vin: str
-    make: str
-    model: str
-    year: int
+    name: str
+    email: str
+    interest: str
 
 class DatabaseDriver:
-    def __init__(self, db_path: str = "auto_db.sqlite"):
+    def __init__(self, db_path: str = "customer_db.sqlite"):
         self.db_path = db_path
         self._init_db()
 
@@ -29,36 +28,34 @@ class DatabaseDriver:
             
             # Create cars table
             cursor.execute("""
-                CREATE TABLE IF NOT EXISTS cars (
-                    vin TEXT PRIMARY KEY,
-                    make TEXT NOT NULL,
-                    model TEXT NOT NULL,
-                    year INTEGER NOT NULL
+                CREATE TABLE IF NOT EXISTS customer (
+                    name TEXT NOT NULL,
+                    email TEXT PRIMARY KEY,
+                    interest TEXT NOT NULL
                 )
             """)
             conn.commit()
 
-    def create_car(self, vin: str, make: str, model: str, year: int) -> Car:
+    def create_car(self, name: str, email: str, interest: str) -> Car:
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "INSERT INTO cars (vin, make, model, year) VALUES (?, ?, ?, ?)",
-                (vin, make, model, year)
+                "INSERT INTO customer (name, email, interest) VALUES (?, ?, ?)",
+                (name, email, interest)
             )
             conn.commit()
-            return Car(vin=vin, make=make, model=model, year=year)
+            return Car(name=name, email=email, interest=interest)
 
-    def get_car_by_vin(self, vin: str) -> Optional[Car]:
+    def get_car_by_email(self, email: str) -> Optional[Car]:
         with self._get_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM cars WHERE vin = ?", (vin,))
+            cursor.execute("SELECT * FROM cars WHERE email = ?", (email,))
             row = cursor.fetchone()
             if not row:
                 return None
             
             return Car(
-                vin=row[0],
-                make=row[1],
-                model=row[2],
-                year=row[3]
+                name=row[0],
+                email=row[1],
+                interest=row[2],
             )

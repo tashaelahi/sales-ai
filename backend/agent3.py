@@ -8,7 +8,7 @@ from livekit.agents import (
 from livekit.plugins import openai
 from dotenv import load_dotenv
 from api import AssistantFnc
-from prompts import INSTRUCTIONS, WELCOME_MESSAGE
+from prompts import INSTRUCTIONS, WELCOME_MESSAGE , LOOKUP_VIN_MESSAGE
 
 load_dotenv()
 OPENAI_KEY = os.getenv("OPENAI_API_KEY")
