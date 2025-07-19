@@ -4,7 +4,9 @@ from livekit.agents import (
     JobContext,
     WorkerOptions,
     cli,
-    llm
+    llm,
+    Agent,
+    AgentSession,
 )
 from livekit.agents.multimodal import MultimodalAgent
 from livekit.plugins import openai
